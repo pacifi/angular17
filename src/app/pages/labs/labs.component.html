@@ -1,0 +1,43 @@
+<div class="container">
+  <h1>Hola este es mi primer proyecto angular</h1>
+  <h2>{{ welcome }}</h2>
+  <p>{{ tasks.length }}</p>
+  <ul>
+    <li *ngFor="let task of tasks; index as i">
+      {{ i }}  {{ task }}
+    </li>
+  </ul>
+
+  <hr>
+
+  <h2>{{ 'hola'.repeat(4) }}</h2>
+  <p>la suma de 3+3 es {{ 3 + 3 }}</p>
+
+  <p>Hola soy {{ person.name }} y mi edad es {{ person.age }}</p>
+
+
+  <hr>
+  <img [src]="person.avatar" alt="">
+  <input type="text" [value]="person.name">
+  <button [disabled]="disabled">Click me</button>
+  <hr>
+
+  <button (click)="clickHandler()">Click me</button>
+  <button (dblclick)="clickHandler()"> Double Click me</button>
+  <p>(change)</p>
+  <input type="number" [value]="person.age" (change)="changeHandler($event)">
+  <p>keydown</p>
+  <input type="text" [value]="person.name" (keydown)="keydownHandler($event)">
+  <p>keydown shfif tlslll</p>
+  <input type="text" [value]="person.name" (keydown.shift.t)="clickHandler()">
+
+  <h2>Signals</h2>
+  <p>{{ name }}</p>
+  <p>{{ nameSingal() }}</p>
+  name: <input type="text" [value]="person.age" (change)="changeHandler2($event)">
+  <h2>Structuras Signal</h2>
+  <p>{{ tasksSingnal().length }}</p>
+  <ul>
+    <li *ngFor="let task of tasksSingnal(); index as i">{{ i }} {{ task }}</li>
+  </ul>
+</div>
