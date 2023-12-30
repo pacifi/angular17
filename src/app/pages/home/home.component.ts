@@ -1,4 +1,4 @@
-import {Component, computed, signal, WritableSignal} from '@angular/core';
+import {Component, computed, effect, inject, Injector, signal, WritableSignal} from '@angular/core';
 import {JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {Task} from "../../models/task.models";
 import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms"
@@ -18,18 +18,28 @@ import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms"
 
 
 export class HomeComponent {
-  tasks = signal<Task[]>([
-    {
-      id: Date.now(),
-      title: "Crear Proyecto",
-      completed: false
-    },
-    {
-      id: Date.now(),
-      title: "Crear Componente",
-      completed: false
+
+  injector = inject(Injector);
+
+  ngOnInit() {
+    const storage = localStorage.getItem('tasks');
+    if (storage) {
+      const tasks = JSON.parse(storage);
+      this.tasks.set(tasks);
     }
-  ]);
+    this.trackTask();
+  }
+
+  trackTask() {
+    effect(() => {
+      const tasks = this.tasks();
+
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }, {injector: this.injector});
+  }
+
+
+  tasks = signal<Task[]>([]);
 
   filter: WritableSignal<'all' | 'pending' | 'completed'> = signal('all');
   tasksByFilter = computed(() => {
