@@ -1,5 +1,5 @@
 import {Component, computed, effect, inject, Injector, signal, WritableSignal} from '@angular/core';
-import {JsonPipe, NgForOf, NgIf} from "@angular/common";
+import { JsonPipe } from "@angular/common";
 import {Task} from "../../models/task.models";
 import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms"
 
@@ -8,10 +8,9 @@ import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms"
   selector: 'app-home',
   standalone: true,
   imports: [
-    NgForOf,
     JsonPipe,
-    NgIf, ReactiveFormsModule
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
