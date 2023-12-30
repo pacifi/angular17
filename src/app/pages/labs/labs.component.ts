@@ -1,6 +1,6 @@
 import {Component, signal} from '@angular/core';
 import {CommonModule, NgForOf, NgIf, NgSwitch, NgSwitchCase} from "@angular/common";
-import {FormControl, ReactiveFormsModule} from "@angular/forms";
+import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 
 
 @Component({
@@ -20,6 +20,18 @@ export class LabsComponent {
   welcome = 'todoapp';
 
   colorCtrl = new FormControl();
+  widthCtrl = new FormControl(50, {
+    nonNullable: true
+  })
+  nameCtrl = new FormControl('Bonnier',
+    {
+      nonNullable: true,
+      validators: [
+        Validators.required,
+        Validators.minLength(3)
+      ]
+    }
+  )
 
   constructor() {
     this.colorCtrl.valueChanges.subscribe(value => {
