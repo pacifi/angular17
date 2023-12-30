@@ -40,4 +40,23 @@
   <ul>
     <li *ngFor="let task of tasksSingnal(); index as i">{{ i }} {{ task }}</li>
   </ul>
+
+  <h2>Ng if</h2>
+
+  <div *ngIf="1 !== 1">
+    My Content
+  </div>
+  <div *ngIf="nameSingal() === 'Bonnier'">
+    es el if de bonnier
+  </div>
+  <h2>Ng Switch</h2>
+
+  <div [ngSwitch]="person.name">
+    <p *ngSwitchCase="'Juan'">Yo Soy Juan</p>
+    <p *ngSwitchCase="'Martin'">Yo Soy Juan</p>
+  </div>
+  <h2>Forms</h2>
+
+  <input type="color" [formControl]="colorCtrl">
+  <p>Color: {{ colorCtrl.value }}</p>
 </div>

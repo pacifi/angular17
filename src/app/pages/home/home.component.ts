@@ -1,13 +1,15 @@
 import {Component, signal} from '@angular/core';
-import {JsonPipe, NgForOf} from "@angular/common";
+import {JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {Task} from "../../models/task.models";
+import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms"
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     NgForOf,
-    JsonPipe
+    JsonPipe,
+    NgIf, ReactiveFormsModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -26,10 +28,18 @@ export class HomeComponent {
     }
   ]);
 
-  changeHandler(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const newTask = input.value;
-    this.addTask(newTask);
+  newTaskCtrl = new FormControl('', {
+    nonNullable: true, validators: [Validators.required]
+  })
+
+  changeHandler() {
+    if (this.newTaskCtrl.valid) {
+      const value = this.newTaskCtrl.value.trim();
+      if (value !== '') {
+        this.addTask(value);
+        this.newTaskCtrl.setValue('');
+      }
+    }
   }
 
 

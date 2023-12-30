@@ -1,11 +1,17 @@
 import {Component, signal} from '@angular/core';
-import {NgForOf} from "@angular/common";
+import {CommonModule, NgForOf, NgIf, NgSwitch, NgSwitchCase} from "@angular/common";
+import {FormControl, ReactiveFormsModule} from "@angular/forms";
+
 
 @Component({
   selector: 'app-labs',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    NgIf,
+    NgSwitch,
+    NgSwitchCase,
+    ReactiveFormsModule,
   ],
   templateUrl: './labs.component.html',
   styleUrl: './labs.component.scss'
@@ -13,6 +19,13 @@ import {NgForOf} from "@angular/common";
 export class LabsComponent {
   welcome = 'todoapp';
 
+  colorCtrl = new FormControl();
+
+  constructor() {
+    this.colorCtrl.valueChanges.subscribe(value => {
+      console.log(value);
+    });
+  }
 
   tasks = [
     'Instalar Angular CLI',
@@ -62,7 +75,7 @@ export class LabsComponent {
     const newValue = input.value
     this.nameSingal.set(newValue);
     console.log(input.value);
-
-
   }
+
+
 }
