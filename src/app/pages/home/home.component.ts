@@ -1,7 +1,8 @@
-import {Component, signal} from '@angular/core';
+import {Component, computed, signal, WritableSignal} from '@angular/core';
 import {JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {Task} from "../../models/task.models";
 import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms"
+
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,8 @@ import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms"
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
+
+
 export class HomeComponent {
   tasks = signal<Task[]>([
     {
@@ -27,6 +30,20 @@ export class HomeComponent {
       completed: false
     }
   ]);
+
+  filter: WritableSignal<'all' | 'pending' | 'completed'> = signal('all');
+  tasksByFilter = computed(() => {
+    const filter = this.filter();
+    const tasks = this.tasks();
+    if (filter === 'pending') {
+      return tasks.filter(task => !task.completed)
+    }
+    if (filter === 'completed') {
+      return tasks.filter(task => task.completed)
+    }
+    return tasks;
+
+  })
 
   newTaskCtrl = new FormControl('', {
     nonNullable: true, validators: [Validators.required]
@@ -70,5 +87,44 @@ export class HomeComponent {
         return task
       })
     });
+  }
+
+  updateTaskEditingMode(index: number) {
+    this.tasks.update((tasks) => {
+      return tasks.map((task, position) => {
+        if (position === index) {
+          return {
+            ...task, editing: true
+          }
+        }
+        return {
+          ...task, editing: false
+        }
+      })
+    });
+
+  }
+
+  updateTaskTitle(index: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    this.tasks.update((tasks) => {
+      return tasks.map((task, position) => {
+        if (position === index) {
+          return {
+            ...task, title: input.value, editing: false
+          }
+        }
+        return task
+      })
+    });
+
+  }
+
+
+  changeFilter(filter: 'all' | 'pending' | 'completed') {
+    this
+      .filter
+      .set(filter);
   }
 }
